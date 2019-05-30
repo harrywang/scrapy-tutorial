@@ -95,3 +95,52 @@ HTML to parse:
     </div>
 </div>
 ```
+
+Parse and output to log:
+
+```python
+import scrapy
+
+
+class QuotesSpider(scrapy.Spider):
+    name = "quotes"
+    start_urls = [
+        'http://quotes.toscrape.com/page/1/',
+        'http://quotes.toscrape.com/page/2/',
+    ]
+
+    def parse(self, response):
+        for quote in response.css('div.quote'):
+            yield {
+                'text': quote.css('span.text::text').get(),
+                'author': quote.css('small.author::text').get(),
+                'tags': quote.css('div.tags a.tag::text').getall(),
+            }
+```
+Save the output above to json: `scrapy crawl quotes -o quotes.json` - Note: this command appends to existing json instead of overwriting it.
+
+### Following links
+
+Next link html on the page:
+
+```html
+<ul class="pager">
+    <li class="next">
+        <a href="/page/2/">Next <span aria-hidden="true">&rarr;</span></a>
+    </li>
+</ul>
+```
+Extract it via shell:
+
+```bash
+>>> response.css('li.next a::attr(href)').get()
+'/page/2/'
+>>> response.css('li.next a').attrib['href']
+'/page/2'
+```
+Follow links:
+
+```python
+for a in response.css('li.next a'):
+    yield response.follow(a, callback=self.parse)
+```
