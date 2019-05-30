@@ -30,3 +30,13 @@ tutorial/
 ```
 
 I removed the top level `tutorial` folder shown above.
+
+## Run
+
+Run `scrapy crawl quotes` at the project top level.
+
+Note that spider name is defined in the spider class, e.g., `quotes_spider.py`:
+```python
+class QuotesSpider(scrapy.Spider):
+    name = "quotes"
+```
