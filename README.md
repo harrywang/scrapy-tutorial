@@ -144,3 +144,11 @@ Follow links:
 for a in response.css('li.next a'):
     yield response.follow(a, callback=self.parse)
 ```
+
+## Using spider arguments
+See https://docs.scrapy.org/en/latest/topics/spiders.html#spiderargs
+
+
+## What else?
+
+See: https://docs.scrapy.org/en/latest/intro/overview.html#topics-whatelse
