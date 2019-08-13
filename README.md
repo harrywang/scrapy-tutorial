@@ -1,18 +1,12 @@
 # Scrapy Tutorial
 
-This tutorial is based on the [Scrapy official tutorial](https://docs.scrapy.org/en/latest/intro/tutorial.html) with more information and code on storing data in database using SQLAlchemy.
+Part of this tutorial is based on the [Scrapy official tutorial](https://docs.scrapy.org/en/latest/intro/tutorial.html) with more information and code on:
+
+- Items and ItemLoader
+- Database via SQLAlchemy
+- Deployment
 
 The webiste to crawl is [http://quotes.toscrape.com](http://quotes.toscrape.com).
-
-<img width="821" alt="Screen Shot 2019-08-13 at 9 43 34 AM" src="https://user-images.githubusercontent.com/595772/62946721-3bb2a280-bdaf-11e9-9521-3f1be57a1838.png">
-
-Local outputs (json and html pages) are stored in "local-output" folder, which is ignored in .gitignore.
-
-For example:
-
-- `scrapy crawl quotes` saves a set of html pages to /local_output
-- `scrapy crawl quotes -o ./local_output/quotes.json` saves the output to a json file
-
 
 ## Setup
 Tested with Python 3.6 via virtual environment:
@@ -21,6 +15,34 @@ $ python3.6 -m venv venv
 $ source venv/bin/activate
 $ pip install -r requirements.txt
 ```
+
+## Run
+
+Run `scrapy crawl quotes` at the project top level.
+
+Note that spider name is defined in the spider class, e.g., `quotes_spider.py`:
+```python
+class QuotesSpider(scrapy.Spider):
+    name = "quotes"
+```
+
+## Versions
+
+I keep different versions for learning purposes using git tags:
+
+### Version 1 (tag v1.0)
+
+Key Concepts: basic spider setup, project folder structure, saving files as json and html files, using Scrap shell，Following links, etc.
+
+Local outputs (json and html pages) are stored in "local-output" folder, which is ignored in .gitignore.
+
+For example:
+
+scrapy crawl quotes saves a set of html pages to /local_output
+scrapy crawl quotes -o ./local_output/quotes.json saves the output to a json file
+
+
+
 To create the initial project folder, run `scrapy startproject tutorial` (only need to do this once) I removed the top level `tutorial` folder and add additional files and folders as shown below:
 
 ```
@@ -35,8 +57,6 @@ tutorial/
 
         middlewares.py    # project middlewares file
 
-        models.py         # project database schema file
-
         pipelines.py      # project pipelines file
 
         settings.py       # project settings file
@@ -45,19 +65,9 @@ tutorial/
             __init__.py
 ```
 
+## Other Notes
 
-
-## Run
-
-Run `scrapy crawl quotes` at the project top level.
-
-Note that spider name is defined in the spider class, e.g., `quotes_spider.py`:
-```python
-class QuotesSpider(scrapy.Spider):
-    name = "quotes"
-```
-
-## Scrapy Shell
+### Scrapy Shell
 
 
 Enter shell: `scrapy shell 'http://quotes.toscrape.com/page/1/'`
@@ -133,7 +143,7 @@ class QuotesSpider(scrapy.Spider):
                 'tags': quote.css('div.tags a.tag::text').getall(),
             }
 ```
-Save the output above to json: `scrapy crawl quotes -o quotes.json` - Note: this command appends to existing json instead of overwriting it.
+Save the output above to json: `scrapy crawl quotes -o ./local_output/quotes.json` - Note: **this command appends to existing json instead of overwriting it**.
 
 ### Following links
 
@@ -161,15 +171,5 @@ for a in response.css('li.next a'):
     yield response.follow(a, callback=self.parse)
 ```
 
-## Using spider arguments
+### Using spider arguments
 See https://docs.scrapy.org/en/latest/topics/spiders.html#spiderargs
-
-
-## Database
-
-
-
-
-## What else?
-
-See: https://docs.scrapy.org/en/latest/intro/overview.html#topics-whatelse
