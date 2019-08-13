@@ -1,18 +1,32 @@
-# Scrapy Official Tutorial
+# Scrapy Tutorial
 
-This is a Scrapy tutorial at https://docs.scrapy.org/en/latest/intro/tutorial.html
+This tutorial is based on the [Scrapy official tutorial](https://docs.scrapy.org/en/latest/intro/tutorial.html) with more information and code on storing data in database using SQLAlchemy.
+
+The webiste to crawl is [http://quotes.toscrape.com](http://quotes.toscrape.com).
+
+<img width="821" alt="Screen Shot 2019-08-13 at 9 43 34 AM" src="https://user-images.githubusercontent.com/595772/62946721-3bb2a280-bdaf-11e9-9521-3f1be57a1838.png">
+
+Local outputs (json and html pages) are stored in "local-output" folder, which is ignored in .gitignore.
+
+For example:
+
+- `scrapy crawl quotes` saves a set of html pages to /local_output
+- `scrapy crawl quotes -o ./local_output/quotes.json` saves the output to a json file
+
 
 ## Setup
 Tested with Python 3.6 via virtual environment:
 ```shell
-$ virtualenv venv -p python3.6
+$ python3.6 -m venv venv
 $ source venv/bin/activate
 $ pip install -r requirements.txt
 ```
-To create the initial project folder, run `scrapy startproject tutorial`:
+To create the initial project folder, run `scrapy startproject tutorial` (only need to do this once) I removed the top level `tutorial` folder and add additional files and folders as shown below:
+
 ```
 tutorial/
     scrapy.cfg            # deploy configuration file
+
 
     tutorial/             # project's Python module, you'll import your code from here
         __init__.py
@@ -20,6 +34,8 @@ tutorial/
         items.py          # project items definition file
 
         middlewares.py    # project middlewares file
+
+        models.py         # project database schema file
 
         pipelines.py      # project pipelines file
 
@@ -29,7 +45,7 @@ tutorial/
             __init__.py
 ```
 
-I removed the top level `tutorial` folder shown above.
+
 
 ## Run
 
@@ -147,6 +163,11 @@ for a in response.css('li.next a'):
 
 ## Using spider arguments
 See https://docs.scrapy.org/en/latest/topics/spiders.html#spiderargs
+
+
+## Database
+
+
 
 
 ## What else?

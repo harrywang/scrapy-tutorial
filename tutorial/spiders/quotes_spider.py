@@ -18,14 +18,14 @@ class QuotesSpider(scrapy.Spider):
 
     def parse(self, response):
         page = response.url.split("/")[-2]  # getting the page number from the URL
-        filename = 'quotes-%s.html' % page
+        filename = 'local_output/' + 'quotes-%s.html' % page
         with open(filename, 'wb') as f:
             f.write(response.body)
         self.log('Saved file %s' % filename)
 
         for quote in response.css('div.quote'):
             yield {
-                'text': quote.css('span.text::text').get(),
+                'text': quote.css('span.text::text').get().strip(u'\u201c'u'\u201d'),  # strip the unicode quotes
                 'author': quote.css('small.author::text').get(),
                 'tags': quote.css('div.tags a.tag::text').getall(),
             }

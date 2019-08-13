@@ -104,5 +104,6 @@ venv.bak/
 .mypy_cache/
 
 .DS_Store
-*.html
-*.json
+
+/local_output/*.html
+/local_output/*.json
