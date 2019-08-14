@@ -64,6 +64,24 @@ tutorial/
         spiders/          # a directory where you'll later put your spiders
             __init__.py
 ```
+`self.log('Saved file %s' % filename)` outputs to the log console. `yield` also outputs the DEBUG info in the console, e.g.:
+
+<img width="732" alt="Screen Shot 2019-08-13 at 3 30 44 PM" src="https://user-images.githubusercontent.com/595772/62971274-66b4ea80-bddf-11e9-906d-2a7545907cb0.png">
+
+
+
+### Version 2 (tag v2.0)
+
+The major change is to use Items.
+
+Why use Items?
+
+- clearly specify the structured data to be collected - a central place to look
+- leverage pre and post processors for Items via ItemLoaders (you can also define additional custom processors)
+- Use item pipelines to save data to databases (Version 3)
+- Better code organization - you know where to look for certain processing code
+
+
 
 ## Other Notes
 

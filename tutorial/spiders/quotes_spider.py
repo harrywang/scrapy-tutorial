@@ -1,4 +1,6 @@
 import scrapy
+from scrapy.loader import ItemLoader
+from tutorial.items import QuoteItem
 
 class QuotesSpider(scrapy.Spider):
     name = "quotes"
@@ -7,43 +9,34 @@ class QuotesSpider(scrapy.Spider):
         'http://quotes.toscrape.com/page/1/',
         #'http://quotes.toscrape.com/page/2/',
     ]
-    # long version to implement start_urls array:
-    # def start_requests(self):
-    #     urls = [
-    #         'http://quotes.toscrape.com/page/1/',
-    #         'http://quotes.toscrape.com/page/2/',
-    #     ]
-    #     for url in urls:
-    #         yield scrapy.Request(url=url, callback=self.parse)
+
 
     def parse(self, response):
-        page = response.url.split("/")[-2]  # getting the page number from the URL
-        filename = 'local_output/' + 'quotes-%s.html' % page
-        with open(filename, 'wb') as f:
-            f.write(response.body)
-        self.log('Saved file %s' % filename)
+        quotes = response.xpath("//div[@class='quote']")
 
-        for quote in response.css('div.quote'):
-            yield {
-                'text': quote.css('span.text::text').get().strip(u'\u201c'u'\u201d'),  # strip the unicode quotes
-                'author': quote.css('small.author::text').get(),
-                'tags': quote.css('div.tags a.tag::text').getall(),
-            }
+        for quote in quotes:
+            loader = ItemLoader(item=QuoteItem(), selector=quote)
+             # pay attention to the dot .// to use relative xpath
+            loader.add_xpath('quote', ".//span[@class='text']/text()")
+            loader.add_xpath('author', './/small//text()')
+            loader.add_css('tags', 'div.tags a.tag::text')
 
-        # next_page = response.css('li.next a::attr(href)').get()
+            # without item loader
+            # text = quote.xpath(
+            #     ".//span[@class='text']/text()").extract_first()
+            # author = quote.xpath(
+            #     ".//small//text()").extract_first()
+            # tags = quote.css('div.tags a.tag::text').getall()
+            #
+            # item = QuoteItem()
+            # item["quote"] = text
+            # item["author"] = author
+            # item["tags"] = tags
+            # yield item
 
-        # if next_page is not None:
-        #     next_page = response.urljoin(next_page)
-        #     yield scrapy.Request(next_page, callback=self.parse)
+            yield loader.load_item()
 
-        # shortcut 1
-        # if next_page is not None:
-        #     yield response.follow(next_page, callback=self.parse)
 
-        # shortcut 2
-        # for href in response.css('li.next a::attr(href)'):
-        #     yield response.follow(href, callback=self.parse)
-
-        # shortcut 3
+        # go to Next page
         for a in response.css('li.next a'):
             yield response.follow(a, callback=self.parse)
