@@ -20,6 +20,7 @@ class QuotesSpider(scrapy.Spider):
             loader.add_xpath('quote', ".//span[@class='text']/text()")
             loader.add_xpath('author', './/small//text()')
             loader.add_css('tags', 'div.tags a.tag::text')
+            #loader.add_xpath('tags', './/meta[@class="keywords"]/@content')
 
             # without item loader
             # text = quote.xpath(
