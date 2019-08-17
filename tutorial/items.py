@@ -14,7 +14,14 @@ def remove_quotes(text):
     text = text.strip(u'\u201c'u'\u201d')
     return text
 
+
+def remove_spaces(text):
+    # strip the unicode quotes
+    text = text.strip()
+    return text
+
 class QuoteItem(Item):
-    quote = Field(output_processor=MapCompose(remove_quotes))
-    author = Field()
+    quote_content = Field(output_processor=MapCompose(remove_quotes))
+    author_name = Field(output_processor=MapCompose(remove_spaces))
+    author_bio = Field(output_processor=MapCompose(remove_spaces))
     tags = Field()

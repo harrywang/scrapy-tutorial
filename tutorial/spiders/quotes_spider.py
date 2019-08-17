@@ -17,27 +17,25 @@ class QuotesSpider(scrapy.Spider):
         for quote in quotes:
             loader = ItemLoader(item=QuoteItem(), selector=quote)
              # pay attention to the dot .// to use relative xpath
-            loader.add_xpath('quote', ".//span[@class='text']/text()")
-            loader.add_xpath('author', './/small//text()')
+            loader.add_xpath('quote_content', ".//span[@class='text']/text()")
+            # loader.add_xpath('author', './/small//text()')
             loader.add_css('tags', 'div.tags a.tag::text')
-            #loader.add_xpath('tags', './/meta[@class="keywords"]/@content')
-
-            # without item loader
-            # text = quote.xpath(
-            #     ".//span[@class='text']/text()").extract_first()
-            # author = quote.xpath(
-            #     ".//small//text()").extract_first()
-            # tags = quote.css('div.tags a.tag::text').getall()
-            #
-            # item = QuoteItem()
-            # item["quote"] = text
-            # item["author"] = author
-            # item["tags"] = tags
-            # yield item
-
-            yield loader.load_item()
-
+            quote_item = loader.load_item()
+            author_url = quote.css('.author + a::attr(href)')[0]
+            yield response.follow(author_url, self.parse_author, meta={'quote_item': quote_item})
 
         # go to Next page
-        for a in response.css('li.next a'):
-            yield response.follow(a, callback=self.parse)
+        #for a in response.css('li.next a'):
+        #    yield response.follow(a, callback=self.parse)
+    def parse_author(self, response):
+        quote_item = response.meta['quote_item']
+        loader = ItemLoader(item=quote_item, response=response)
+        loader.add_css('author_name', 'h3.author-title::text')
+        loader.add_css('author_bio', '.author-description::text')
+        yield loader.load_item()
+
+        # yield {
+        #     'name': extract_with_css('h3.author-title::text'),
+        #     'birthdate': extract_with_css('.author-born-date::text'),
+        #     'bio': extract_with_css('.author-description::text'),
+        # }

@@ -81,6 +81,34 @@ Why use Items?
 - Use item pipelines to save data to databases (Version 3)
 - Better code organization - you know where to look for certain processing code
 
+### Version 3 (tag v3.0)
+
+Add database support via SQLAlchemy and use Item pipeline to save items into database.
+
+Three tables: Authors, Quotes, Tags.
+
+- One-to-Many between Authors and Quotes
+- Many-to-Many between Tags and Quotes
+- Many-to-Many between Tags and Authors
+
+Database schema is defined in `/tutorial/models.py` file and connection string is specified in `/tutorial/settings.py`.
+Add a pipleline file and enable the pipeline in `/tutorial/settings.py` (The number 0-1000 specifies the execution order of the pipelines).
+
+```
+ITEM_PIPELINES = {
+    'tutorial.pipelines.SaveQuotesPipeline': 300,
+}
+```
+
+Use the following commands to check local SQLite database:
+
+```
+$ man sqlite3
+$ sqlite3 scrapy_quotes.db
+sqlite> .tables
+sqlite> .schema quote
+sqlite> .quit
+```
 
 
 ## Other Notes

@@ -107,3 +107,6 @@ venv.bak/
 
 /local_output/*.html
 /local_output/*.json
+
+# sqlite
+*.db
