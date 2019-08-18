@@ -109,6 +109,52 @@ sqlite> .tables
 sqlite> .schema quote
 sqlite> .quit
 ```
+### Test SQLAlchemy in Shell
+
+Once you setup models and pipelines, you can run `scrapy shell` to test the database part. Just paste the code block below and open sqlite database to check the results.
+
+```python
+from sqlalchemy.orm import sessionmaker
+from tutorial.models import Quote, Author, Tag, db_connect, create_table
+engine = db_connect()
+create_table(engine)
+Session = sessionmaker(bind=engine)
+session = Session()
+
+quote1 = Quote()
+author1 = Author()
+author1.name = "Linus Torvalds"
+author1.bio = "Linus Torvalds is the creator the Linux kernel and Git."
+quote1.quote_content = "Talk is cheap. Show me the code."
+quote1.author = author1
+tag1 = Tag(name="linux")
+tag2 = Tag(name="git")
+tag3 = Tag(name="simple")
+quote1.tags.append(tag1)
+quote1.tags.append(tag2)
+quote1.tags.append(tag3)
+
+quote2 = Quote()
+author2 = Author()
+author2.name = "Steven Jobs"
+author2.bio = "Steven Jobs was the chairman, chief executive officer, and co-founder of Apple Inc."
+quote2.quote_content = "Stay Hungry Stay Foolish."
+quote2.author = author2
+tag4 = Tag(name="inspiring")
+quote2.tags.append(tag4)
+
+try:
+    session.add(author1)
+    session.add(quote1)
+    session.add(author2)
+    session.add(quote2)
+    session.commit()
+except:
+    session.rollback()
+    raise
+finally:
+    session.close()
+```
 
 
 ## Other Notes

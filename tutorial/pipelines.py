@@ -7,7 +7,7 @@
 
 
 from sqlalchemy.orm import sessionmaker
-from tutorial.models import Quote, Author, Tag, db_connect, create_tables
+from tutorial.models import Quote, Author, Tag, db_connect, create_table
 
 class SaveQuotesPipeline(object):
     def __init__(self):
@@ -16,7 +16,7 @@ class SaveQuotesPipeline(object):
         Creates tables.
         """
         engine = db_connect()
-        create_tables(engine)
+        create_table(engine)
         self.Session = sessionmaker(bind=engine)
 
     def process_item(self, item, spider):

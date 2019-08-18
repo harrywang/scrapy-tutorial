@@ -27,6 +27,7 @@ class QuotesSpider(scrapy.Spider):
         # go to Next page
         #for a in response.css('li.next a'):
         #    yield response.follow(a, callback=self.parse)
+
     def parse_author(self, response):
         quote_item = response.meta['quote_item']
         loader = ItemLoader(item=quote_item, response=response)
