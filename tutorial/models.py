@@ -42,7 +42,7 @@ class Author(Base):
     __tablename__ = "author"
 
     id = Column(Integer, primary_key=True)
-    name = Column('name', String(), unique=True)
+    name = Column('name', String(50), unique=True)
     birthday = Column('birthday', Date())
     bio = Column('bio', Text())
     quotes = relationship('Quote', backref='author')  # One author to many Quotes
@@ -52,6 +52,6 @@ class Tag(Base):
     __tablename__ = "tag"
 
     id = Column(Integer, primary_key=True)
-    name = Column('name', String(), unique=True)
+    name = Column('name', String(30), unique=True)
     quotes = relationship('Quote', secondary='quote_tag',
         lazy='dynamic', backref="tag")  # M-to-M for quote and tag

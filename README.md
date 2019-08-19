@@ -172,6 +172,33 @@ except:
 finally:
     session.close()
 ```
+#### MySQL
+
+- Install MySQL locally: ``$brew install mysql`, which installs MySQL without password. To start MySQL: `mysql.server start` and then connect: `mysql -u root`.
+
+- Create a local database and related user: `CREATE SCHEMA scrapy_quotes DEFAULT CHARACTER SET utf8mb4 ;`
+
+- `mysqlclient` package is required.
+
+- Comment out MySQL connection string in `settings.py` to use MySQL to store items:
+
+    ```python3
+    # SQLite
+    # CONNECTION_STRING = 'sqlite:///scrapy_quotes.db'
+
+    # MySQL
+    CONNECTION_STRING = "{drivername}://{user}:{passwd}@{host}:{port}/{db_name}?charset=utf8".format(
+        drivername="mysql",
+        user="harrywang",
+        passwd="tutorial",
+        host="localhost",
+        port="3306",
+        db_name="scrapy_quotes",
+    )
+    ```
+
+## Deployment
+Deployment to Scrapinghub. See deployment.md for details.
 
 
 ## Other Notes

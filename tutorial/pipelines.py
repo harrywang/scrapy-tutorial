@@ -34,22 +34,24 @@ class SaveQuotesPipeline(object):
         quote.quote_content = item["quote_content"][0]  # content is a list
         quote.author = author
 
-        for tag_name in item["tags"]:
-            tag = Tag(name=tag_name)
-            # check whether the current tag already exists in the database
-            exist_tag = session.query(Tag).filter_by(name = tag.name).first()
-            if exist_tag is not None:  # the current tag exists
-                tag = exist_tag
-            quote.tags.append(tag)
-
+        if "tags" in item:  # check whether the current quote has tags or not
+            for tag_name in item["tags"]:
+                tag = Tag(name=tag_name)
+                # check whether the current tag already exists in the database
+                exist_tag = session.query(Tag).filter_by(name = tag.name).first()
+                if exist_tag is not None:  # the current tag exists
+                    tag = exist_tag
+                quote.tags.append(tag)
 
         try:
             session.add(author)
             session.add(quote)
             session.commit()
+
         except:
             session.rollback()
             raise
+
         finally:
             session.close()
 

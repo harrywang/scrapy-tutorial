@@ -1,2 +1,4 @@
+mysqlclient>=1.4.4
 Scrapy>=1.7.3
+shub>=2.9.0
 SQLAlchemy>=1.3.6

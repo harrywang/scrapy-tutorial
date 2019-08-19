@@ -22,8 +22,8 @@ CONNECTION_STRING = 'sqlite:///scrapy_quotes.db'
 # MySQL
 # CONNECTION_STRING = "{drivername}://{user}:{passwd}@{host}:{port}/{db_name}?charset=utf8".format(
 #     drivername="mysql",
-#     user="YOUR_USERNAME",
-#     passwd="YOUR_PASSWORD",
+#     user="harrywang",
+#     passwd="tutorial",
 #     host="localhost",
 #     port="3306",
 #     db_name="scrapy_quotes",
