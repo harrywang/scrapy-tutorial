@@ -22,11 +22,12 @@ class QuotesSpider(scrapy.Spider):
             loader.add_css('tags', 'div.tags a.tag::text')
             quote_item = loader.load_item()
             author_url = quote.css('.author + a::attr(href)')[0]
+            # go to the author page and pass the current collected quote info
             yield response.follow(author_url, self.parse_author, meta={'quote_item': quote_item})
 
         # go to Next page
-        #for a in response.css('li.next a'):
-        #    yield response.follow(a, callback=self.parse)
+        for a in response.css('li.next a'):
+            yield response.follow(a, callback=self.parse)
 
     def parse_author(self, response):
         quote_item = response.meta['quote_item']
@@ -34,9 +35,3 @@ class QuotesSpider(scrapy.Spider):
         loader.add_css('author_name', 'h3.author-title::text')
         loader.add_css('author_bio', '.author-description::text')
         yield loader.load_item()
-
-        # yield {
-        #     'name': extract_with_css('h3.author-title::text'),
-        #     'birthdate': extract_with_css('.author-born-date::text'),
-        #     'bio': extract_with_css('.author-description::text'),
-        # }

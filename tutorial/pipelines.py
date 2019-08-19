@@ -19,6 +19,7 @@ class SaveQuotesPipeline(object):
         create_table(engine)
         self.Session = sessionmaker(bind=engine)
 
+
     def process_item(self, item, spider):
         """Save quotes in the database.
 
@@ -32,6 +33,15 @@ class SaveQuotesPipeline(object):
         author.bio = item["author_bio"][0]
         quote.quote_content = item["quote_content"][0]  # content is a list
         quote.author = author
+
+        for tag_name in item["tags"]:
+            tag = Tag(name=tag_name)
+            # check whether the current tag already exists in the database
+            exist_tag = session.query(Tag).filter_by(name = tag.name).first()
+            if exist_tag is not None:  # the current tag exists
+                tag = exist_tag
+            quote.tags.append(tag)
+
 
         try:
             session.add(author)

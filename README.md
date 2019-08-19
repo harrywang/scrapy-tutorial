@@ -100,7 +100,7 @@ ITEM_PIPELINES = {
 }
 ```
 
-Use the following commands to check local SQLite database:
+Use the following commands to check local SQLite database. https://sqlitebrowser.org can be used as a GUI tool.
 
 ```
 $ man sqlite3
@@ -134,6 +134,14 @@ quote1.tags.append(tag1)
 quote1.tags.append(tag2)
 quote1.tags.append(tag3)
 
+try:
+    session.add(author1)
+    session.add(quote1)
+    session.commit()
+except:
+    session.rollback()
+    raise
+
 quote2 = Quote()
 author2 = Author()
 author2.name = "Steven Jobs"
@@ -141,11 +149,20 @@ author2.bio = "Steven Jobs was the chairman, chief executive officer, and co-fou
 quote2.quote_content = "Stay Hungry Stay Foolish."
 quote2.author = author2
 tag4 = Tag(name="inspiring")
+tag5 = Tag(name="simple")  # this already exists in the database
+
+# See difference between filter and filter_by at https://bit.ly/2TLvqeV
+
+# exist_tag = session.query(Tag).filter(Tag.name == tag5.name).first()
+exist_tag = session.query(Tag).filter_by(name = tag5.name).first()
+if exist_tag is not None:  # the current tag exists
+    tag5 = exist_tag
+
 quote2.tags.append(tag4)
+quote2.tags.append(tag5)
 
 try:
-    session.add(author1)
-    session.add(quote1)
+
     session.add(author2)
     session.add(quote2)
     session.commit()
