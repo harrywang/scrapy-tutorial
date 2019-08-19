@@ -83,7 +83,8 @@ Why use Items?
 
 ### Version 3 (tag v3.0)
 
-Add database support via SQLAlchemy and use Item pipeline to save items into database.
+- Add database support via SQLAlchemy and use Item pipeline to save items into database (sqlite and mysql)
+- Add instructions on deploying ScrapingHub.com
 
 Three tables: Authors, Quotes, Tags.
 
@@ -172,7 +173,7 @@ except:
 finally:
     session.close()
 ```
-#### MySQL
+### MySQL
 
 - Install MySQL locally: ``$brew install mysql`, which installs MySQL without password. To start MySQL: `mysql.server start` and then connect: `mysql -u root`.
 
@@ -197,7 +198,8 @@ finally:
     )
     ```
 
-## Deployment
+
+### Deployment
 Deployment to Scrapinghub. See deployment.md for details.
 
 
