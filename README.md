@@ -69,7 +69,6 @@ tutorial/
 <img width="732" alt="Screen Shot 2019-08-13 at 3 30 44 PM" src="https://user-images.githubusercontent.com/595772/62971274-66b4ea80-bddf-11e9-906d-2a7545907cb0.png">
 
 
-
 ### Version 2 (tag v2.0)
 
 The major change is to use Items.
@@ -198,9 +197,8 @@ finally:
     )
     ```
 
-
-### Deployment
-Deployment to Scrapinghub. See deployment.md for details.
+### Version 4 (tag v4.0)
+Deployment to Scrapinghub and ScrapydWeb. See [deployment.md](deployment.md) for details.
 
 
 ## Other Notes
