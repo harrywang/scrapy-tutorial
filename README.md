@@ -1,10 +1,6 @@
 # Scrapy Tutorial
 
-Part of this tutorial is based on the [Scrapy official tutorial](https://docs.scrapy.org/en/latest/intro/tutorial.html) with more information and code on:
-
-- Items and ItemLoader
-- Database via SQLAlchemy
-- Deployment
+This repo contains the code for my tutorial: A Minimalist End-to-End Scrapy Tutorial (https://medium.com/p/11e350bcdec0).
 
 The webiste to crawl is [http://quotes.toscrape.com](http://quotes.toscrape.com).
 
