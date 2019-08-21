@@ -5,13 +5,11 @@ from tutorial.items import QuoteItem
 class QuotesSpider(scrapy.Spider):
     name = "quotes"
     allowed_domains = ["toscrape.com"]
-    start_urls = [
-        'http://quotes.toscrape.com/page/1/',
-        #'http://quotes.toscrape.com/page/2/',
-    ]
+    start_urls = ['http://quotes.toscrape.com/']
 
 
     def parse(self, response):
+        self.logger.info('Parse function called on %s', response.url)
         quotes = response.xpath("//div[@class='quote']")
 
         for quote in quotes:
