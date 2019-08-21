@@ -29,9 +29,9 @@ class SaveQuotesPipeline(object):
         quote = Quote()
         author = Author()
         tag = Tag()
-        author.name = item["author_name"][0]
-        author.bio = item["author_bio"][0]
-        quote.quote_content = item["quote_content"][0]  # content is a list
+        author.name = item["author_name"]
+        author.bio = item["author_bio"]
+        quote.quote_content = item["quote_content"]
         quote.author = author
 
         if "tags" in item:  # check whether the current quote has tags or not

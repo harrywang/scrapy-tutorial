@@ -6,7 +6,7 @@
 # https://doc.scrapy.org/en/latest/topics/items.html
 
 from scrapy.item import Item, Field
-from scrapy.loader.processors import MapCompose
+from scrapy.loader.processors import MapCompose, TakeFirst
 
 
 def remove_quotes(text):
@@ -18,7 +18,17 @@ def remove_quotes(text):
 
 
 class QuoteItem(Item):
-    quote_content = Field(input_processor=MapCompose(remove_quotes))
-    author_name = Field(input_processor=MapCompose(str.strip))
-    author_bio = Field(input_processor=MapCompose(str.strip))
+    quote_content = Field(
+        input_processor=MapCompose(remove_quotes),
+        # TakeFirst return the first value not the whole list
+        output_processor=TakeFirst()
+        )
+    author_name = Field(
+        input_processor=MapCompose(str.strip),
+        output_processor=TakeFirst()
+        )
+    author_bio = Field(
+        input_processor=MapCompose(str.strip),
+        output_processor=TakeFirst()
+        )
     tags = Field()
