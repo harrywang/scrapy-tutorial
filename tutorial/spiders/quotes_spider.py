@@ -9,7 +9,7 @@ class QuotesSpider(scrapy.Spider):
 
 
     def parse(self, response):
-        self.logger.info('Parse function called on %s', response.url)
+        self.logger.info('Parse function called on {}'.format(response.url))
         quotes = response.xpath("//div[@class='quote']")
 
         for quote in quotes:
@@ -19,7 +19,7 @@ class QuotesSpider(scrapy.Spider):
             # loader.add_xpath('author', './/small//text()')
             loader.add_css('tags', 'div.tags a.tag::text')
             quote_item = loader.load_item()
-            author_url = quote.css('.author + a::attr(href)')[0]
+            author_url = quote.css('.author + a::attr(href)').get()
             # go to the author page and pass the current collected quote info
             yield response.follow(author_url, self.parse_author, meta={'quote_item': quote_item})
 
