@@ -7,7 +7,30 @@
 
 
 from sqlalchemy.orm import sessionmaker
+from scrapy.exceptions import DropItem
 from tutorial.models import Quote, Author, Tag, db_connect, create_table
+
+class DuplicatesPipeline(object):
+
+    def __init__(self):
+        """
+        Initializes database connection and sessionmaker.
+        Creates tables.
+        """
+        engine = db_connect()
+        create_table(engine)
+        self.Session = sessionmaker(bind=engine)
+
+    def process_item(self, item, spider):
+        session = self.Session()
+        exist_quote = session.query(Quote).filter_by(quote_content = item["quote_content"]).first()
+        if exist_quote is not None:  # the current quote exists
+            raise DropItem("Duplicate item found: %s" % item["quote_content"])
+            session.close()
+        else:
+            return item
+            session.close()
+
 
 class SaveQuotesPipeline(object):
     def __init__(self):
@@ -32,9 +55,16 @@ class SaveQuotesPipeline(object):
         author.name = item["author_name"]
         author.bio = item["author_bio"]
         quote.quote_content = item["quote_content"]
-        quote.author = author
 
-        if "tags" in item:  # check whether the current quote has tags or not
+        # check whether the author exists
+        exist_author = session.query(Author).filter_by(name = author.name).first()
+        if exist_author is not None:  # the current author exists
+            quote.author = exist_author
+        else:
+            quote.author = author
+
+        # check whether the current quote has tags or not
+        if "tags" in item:
             for tag_name in item["tags"]:
                 tag = Tag(name=tag_name)
                 # check whether the current tag already exists in the database
@@ -44,7 +74,6 @@ class SaveQuotesPipeline(object):
                 quote.tags.append(tag)
 
         try:
-            session.add(author)
             session.add(quote)
             session.commit()
 
