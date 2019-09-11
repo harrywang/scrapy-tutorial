@@ -43,7 +43,8 @@ class Author(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column('name', String(50), unique=True)
-    birthday = Column('birthday', Date())
+    birthday = Column('birthday', DateTime)
+    bornlocation = Column('bornlocation', String(150))
     bio = Column('bio', Text())
     quotes = relationship('Quote', backref='author')  # One author to many Quotes
 

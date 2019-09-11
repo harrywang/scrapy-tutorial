@@ -53,6 +53,8 @@ class SaveQuotesPipeline(object):
         author = Author()
         tag = Tag()
         author.name = item["author_name"]
+        author.birthday = item["author_birthday"]
+        author.bornlocation = item["author_bornlocation"]
         author.bio = item["author_bio"]
         quote.quote_content = item["quote_content"]
 

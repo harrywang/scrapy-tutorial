@@ -17,6 +17,7 @@ class QuotesSpider(scrapy.Spider):
             }
 
             author_url = quote.css('.author + a::attr(href)').get()
+            self.logger.info('get author page url')
             # go to the author page
             yield response.follow(author_url, callback=self.parse_author)
 
@@ -26,6 +27,8 @@ class QuotesSpider(scrapy.Spider):
 
     def parse_author(self, response):
         yield {
-            'author_name': response.css('h3.author-title::text').get(),
+            'author_name': response.css('.author-title::text').get(),
+            'author_birthday': response.css('.author-born-date::text').get(),
+            'author_bornlocation': response.css('.author-born-location::text').get(),
             'author_bio': response.css('.author-description::text').get(),
         }

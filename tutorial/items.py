@@ -7,6 +7,7 @@
 
 from scrapy.item import Item, Field
 from scrapy.loader.processors import MapCompose, TakeFirst
+from datetime import datetime
 
 
 def remove_quotes(text):
@@ -15,6 +16,15 @@ def remove_quotes(text):
     return text
 
 
+def convert_date(text):
+    # convert string March 14, 1879 to Python date
+    return datetime.strptime(text, '%B %d, %Y')
+
+
+def parse_location(text):
+    # parse location "in Ulm, Germany"
+    # this simply remove "in ", you can further parse city, state, country, etc.
+    return text[3:]
 
 
 class QuoteItem(Item):
@@ -27,6 +37,14 @@ class QuoteItem(Item):
         input_processor=MapCompose(str.strip),
         output_processor=TakeFirst()
         )
+    author_birthday = Field(
+        input_processor=MapCompose(convert_date),
+        output_processor=TakeFirst()
+    )
+    author_bornlocation = Field(
+        input_processor=MapCompose(parse_location),
+        output_processor=TakeFirst()
+    )
     author_bio = Field(
         input_processor=MapCompose(str.strip),
         output_processor=TakeFirst()
