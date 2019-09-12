@@ -9,6 +9,7 @@
 from sqlalchemy.orm import sessionmaker
 from scrapy.exceptions import DropItem
 from tutorial.models import Quote, Author, Tag, db_connect, create_table
+import logging
 
 class DuplicatesPipeline(object):
 
@@ -20,6 +21,7 @@ class DuplicatesPipeline(object):
         engine = db_connect()
         create_table(engine)
         self.Session = sessionmaker(bind=engine)
+        logging.info("****DuplicatesPipeline: database connected****")
 
     def process_item(self, item, spider):
         session = self.Session()
@@ -35,18 +37,18 @@ class DuplicatesPipeline(object):
 class SaveQuotesPipeline(object):
     def __init__(self):
         """
-        Initializes database connection and sessionmaker.
-        Creates tables.
+        Initializes database connection and sessionmaker
+        Creates tables
         """
         engine = db_connect()
         create_table(engine)
         self.Session = sessionmaker(bind=engine)
+        logging.info("****SaveQuotePipeline: database connected****")
 
 
     def process_item(self, item, spider):
-        """Save quotes in the database.
-
-        This method is called for every item pipeline component.
+        """Save quotes in the database
+        This method is called for every item pipeline component
         """
         session = self.Session()
         quote = Quote()
