@@ -2,7 +2,7 @@
 
 This repo contains the code for my tutorial: A Minimalist End-to-End Scrapy Tutorial (https://medium.com/p/11e350bcdec0).
 
-The webiste to crawl is [http://quotes.toscrape.com](http://quotes.toscrape.com).
+The website to crawl is [http://quotes.toscrape.com](http://quotes.toscrape.com).
 
 ## Setup
 Tested with Python 3.6 via virtual environment:
@@ -21,6 +21,10 @@ Note that spider name is defined in the spider class, e.g., `quotes_spider.py`:
 class QuotesSpider(scrapy.Spider):
     name = "quotes"
 ```
+
+## Deployment
+
+See deployment.md
 
 ## Versions
 
